@@ -1,13 +1,14 @@
 # -*- encoding: utf-8 -*-
 
-import uuid
+import datetime
 import json
+import uuid
+
+from kombu import Connection, Exchange, Queue, BrokerConnection
 from requests import Response
 from requests.compat import urlparse, StringIO
 from requests.adapters import BaseAdapter
 from requests.hooks import dispatch_hook
-from kombu import Connection, Exchange, Queue, BrokerConnection
-import datetime
 
 
 def build_response(request, data, code, encoding):
@@ -44,12 +45,14 @@ class CeleryAdapter(BaseAdapter):
             request.headers.get('queue', 'default')
         )
 
-        message = {"id": uuid.uuid4().hex,
-                   "task": request.headers['task'],
-                   "args": [],
-                   "kwargs": json.loads(request.body),
-                   "retries": request.headers.get('retries', 0),
-                   "eta": datetime.datetime.now().isoformat()}
+        message = {
+            "id": uuid.uuid4().hex,
+            "task": request.headers['task'],
+            "args": [],
+            "kwargs": json.loads(request.body),
+            "retries": request.headers.get('retries', 0),
+            "eta": datetime.datetime.now().isoformat()
+        }
 
         simple_queue.put(message)
         simple_queue.close()
@@ -71,7 +74,3 @@ class SQSCeleryAdapter(CeleryAdapter):
 
 class RedisCeleryAdapter(CeleryAdapter):
     pass
-
-
-
-

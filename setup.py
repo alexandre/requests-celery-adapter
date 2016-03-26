@@ -8,16 +8,16 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.md')) as f:
     README = f.read()
 
-requires = ['kombu==3.0.26',
-            'requests==2.3.0',
-            'click==3.1',
-            'boto==2.30.0' if not PY3 else 'boto3==1.3.0',
-            ]
+requires = [
+    'kombu==3.0.26',
+    'requests==2.3.0',
+    'click==3.1',
+    'boto==2.30.0' if not PY3 else 'boto3==1.3.0',
+]
 
 setup(name='celery_adapter',
       version='0.1',
       description='Rating Analytics Celery Client',
-      # long_description=README + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python",
                    "Framework :: Celery",
                    "Topic :: Internet :: Worker",
