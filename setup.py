@@ -1,4 +1,6 @@
 import os
+import sys
+PY3 = sys.version_info.major == 3
 
 from setuptools import setup, find_packages
 
@@ -9,7 +11,7 @@ with open(os.path.join(here, 'README.md')) as f:
 requires = ['kombu==3.0.26',
             'requests==2.3.0',
             'click==3.1',
-            'boto==2.30.0',
+            'boto==2.30.0' if not PY3 else 'boto3==1.3.0',
             ]
 
 setup(name='celery_adapter',
